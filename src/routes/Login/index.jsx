@@ -9,6 +9,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../../components/Logo';
+import Header from '../../components/Header';
+import { useNavigate } from 'react-router-dom';
+import { postLogin } from '../../services/postLogin';
 
 function Copyright(props) {
   return (
@@ -22,23 +25,43 @@ function Copyright(props) {
     </Typography>
   );
 }
-
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  // localStorage.setItem('user', null)
+  const navigate = useNavigate()
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+
+    // Verificar se os campos estão preenchidos
+    if (!data.get('email') || !data.get('password')) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const response = await postLogin({
+        email: data.get('email'),
+        password: data.get('password')
     });
-  };
+
+    if (response.data === "") {
+      localStorage.setItem('user', null)
+      console.log(response.data)
+      return
+    }
+    localStorage.setItem('user', JSON.stringify(response.data))
+    navigate(0)
+
+};
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Header/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,14 +75,14 @@ export default function SignIn() {
           {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <img src={logo} />
           </Avatar> */}
-          <Logo/>
+          <Logo width="100px"/>
           <Typography component="h1" variant="h5">
             Entrar
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
-              required
+              required={true}
               fullWidth
               id="email"
               label="Email"
@@ -69,7 +92,7 @@ export default function SignIn() {
             />
             <TextField
               margin="normal"
-              required
+              required={true}
               fullWidth
               name="password"
               label="Senha"
@@ -83,7 +106,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Entrar
             </Button>
             <Grid container>
               <Grid item>

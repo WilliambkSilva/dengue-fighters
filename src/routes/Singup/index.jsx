@@ -10,6 +10,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../../components/Logo';
 import { FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@mui/material';
+import { postUser } from '../../services/createUser';
+import { useNavigate } from 'react-router-dom'
+import Header from '../../components/Header';
 
 function Copyright(props) {
   return (
@@ -33,20 +36,38 @@ export default function SignUp() {
     setGender(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      tel: data.get('telefone'),
+
+    // Verificar se os campos estão preenchidos
+    if (!data.get('name') || !data.get('gender') || !data.get('email') || !data.get('telefone') || !data.get('password')) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const response = await postUser({
+      completeName: data.get('name'),
+      gender: data.get('gender'),
       email: data.get('email'),
+      phone: data.get('telefone'),
       password: data.get('password'),
-      gender: gender,
-    });
-  };
+    })
+
+    if (response.status === 201) {
+      alert('Usuário criado com sucesso!')
+      navigate('/')
+    } else {
+      alert('Erro ao criar usuário!')
+      navigate('/singup')
+    }
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Header/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -57,7 +78,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Logo/>
+          <Logo width="100px"/>
           <Typography component="h1" variant="h5">
             Criar Conta
           </Typography>

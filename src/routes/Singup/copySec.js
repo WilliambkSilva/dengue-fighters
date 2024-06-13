@@ -9,8 +9,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../../components/Logo';
-import CheckGenero from '../../components/CheckGenero'; 
-import { FormControl, FormControlLabel, FormGroup } from '@mui/material';
+import { FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@mui/material';
+import { postUser } from '../../services/createUser';
+import { useNavigate } from 'react-router-dom'
 
 function Copyright(props) {
   return (
@@ -25,20 +26,35 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [gender, setGender] = React.useState('mulher');
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      tel: data.get('telefone'),
+
+    const response = await postUser({
+      completeName: data.get('name'),
+      gender: data.get('gender'),
       email: data.get('email'),
+      phone: data.get('telefone'),
       password: data.get('password'),
-    });
+    })
+    if (response.status === 201) {
+
+    } else {
+
+    }
+
+
   };
 
   return (
@@ -71,7 +87,13 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <CheckGenero/>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Gênero</FormLabel>
+                  <RadioGroup row aria-label="gênero" name="gender" value={gender} onChange={handleGenderChange}>
+                    <FormControlLabel value="H" control={<Radio />} label="Homem" />
+                    <FormControlLabel value="M" control={<Radio />} label="Mulher" />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
