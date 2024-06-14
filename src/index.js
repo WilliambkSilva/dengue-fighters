@@ -6,6 +6,7 @@ import Login from './routes/Login';
 import SignUp from './routes/Singup';
 import Home from './routes/Home'
 import isAuthenticated from './auth'
+import CreateEventPage from './routes/CreateEventPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,7 @@ root.render(
         <Route path='/' element={isAuthenticated() ? <Navigate to="/home" replace/> : <Login/>}/>
         <Route path='/singup' element={isAuthenticated() ? <Navigate to="/home" replace/> :<SignUp/>}/>
         <Route path='/home' element={isAuthenticated() ? <Home/> : <Navigate to="/" replace />} />
+        <Route path='/create-event' element={isAuthenticated() ? <CreateEventPage/> : <Navigate to="/" replace />} />
         {/* <Route path='/*' element={<Navigate to="/"/>}/> */}
       </Routes>
     </BrowserRouter>

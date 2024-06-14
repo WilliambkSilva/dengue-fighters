@@ -12,8 +12,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Logo from '../Logo'
 import { Link, useNavigate} from 'react-router-dom';
 import isAuthenticated from '../../auth';
+import { postEvent } from '../../services/createEvent';
 
-const pages = ['Home', 'Pricing', 'Sair'];
+const pages = ['Home', 'Pricing', 'Add', 'Sair'];
 
 function Header() {
   const navigate = useNavigate()
@@ -31,6 +32,17 @@ function Header() {
   function handleHomeClick() {
     // Adicione aqui o código que você deseja executar
     navigate('/home')
+  }
+
+  
+  async function handleAddClick(){
+    navigate('/create-event')
+    // const response = await postEvent({
+    //   usuarioCriador: 1,
+    //   nomeEvento: 'Evento de teste',
+    //   localEvento: 'casarao',
+    //   descricaoEvento: 'a noite pega fogo'
+    // })
   }
   
   function handlePricingClick() {
@@ -92,6 +104,9 @@ function Header() {
                   case 'Pricing':
                     handleClick = handlePricingClick;
                     break;
+                  case 'Add':
+                    handleClick = handleAddClick;
+                    break
                   case 'Sair':
                     handleClick = handleSairClick;
                     break;
@@ -133,6 +148,9 @@ function Header() {
                   break;
                 case 'Pricing':
                   handleClick = handlePricingClick;
+                  break;
+                case 'Add':
+                  handleClick = handleAddClick;
                   break;
                 case 'Sair':
                   handleClick = handleSairClick;
