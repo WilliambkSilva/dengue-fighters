@@ -27,7 +27,7 @@ export default function Card(props) {
       <h4>ORGANIZADOR: <p>{props.organizador}</p> </h4>
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZqJdltHhM09jw08a2HcmQmeNA2etjsaprng&s" alt="aaa" />
       <h3>Descrição:</h3>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint rem repudiandae reprehenderit incidunt voluptate facilis dolores aspernatur iusto aperiam obcaecati iure inventore voluptates maxime quasi enim, illo eum eaque nam!</p>
+      <p>{props.description ||  'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint rem repudiandae reprehenderit incidunt voluptate facilis dolores aspernatur iusto aperiam obcaecati iure inventore voluptates maxime quasi enim, illo eum eaque nam!'}</p>
       <ButtonInscrevaSe>Se Inscreva</ButtonInscrevaSe>
     </CardContainer>
   );
