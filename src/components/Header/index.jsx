@@ -49,6 +49,17 @@ function Header() {
     console.log("Pricing button clicked");
     // Adicione aqui o código que você deseja executar
   }
+
+  async function handleAddClick(){
+    const response = await postEvent({
+      usuarioCriador: 1,
+      nomeEvento: 'Evento de teste',
+      dataEvento: Date.now().toLocaleString(),
+      localEvento: 'casarao',
+      descricaoEvento: 'a noite pega fogo'
+    })
+    console.log(response)
+  }
   
   function handleSairClick() {
     console.log("Sair button clicked");
